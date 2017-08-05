@@ -1,5 +1,16 @@
+const morgan = require('morgan');
+
 var express = require('express');
 var app = express();
+
+/*
+app.use(function (req, res, next) {
+  console.log(`request made to ${req.method} ${req.originalUrl}`);
+  next();
+});
+*/
+app.use(morgan('dev'));
+
 
 var port = process.env.PORT || 3000;
 /*
