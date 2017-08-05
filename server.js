@@ -2,6 +2,9 @@ const morgan = require('morgan');
 
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+var contacts = [];
+var contactID = 1;
 
 /*
 app.use(function (req, res, next) {
@@ -10,6 +13,10 @@ app.use(function (req, res, next) {
 });
 */
 app.use(morgan('dev'));
+
+app.use(bodyParser.json());
+
+
 
 
 var port = process.env.PORT || 3000;
@@ -32,6 +39,33 @@ app.get('/addViaQuery', function (req, res) {
 
 	res.send(`${numberOne + numberTwo}`);  // convert back to string
 })
+
+/*
+app.post('/contacts', function (req, res) {
+	console.log(req);
+	res.send('ok');
+});
+*/
+
+app.post('/contacts', function (req, res) {
+  // grab the posted info
+  var contactInfo = req.body;
+
+  // add an id
+  contactInfo.id = contactID;
+
+  // increment the id for the next time
+  contactID++;
+
+  // add it to the in-memory array
+  contacts.push(contactInfo);
+
+  console.log(contacts);
+
+  // tell the message sender that the contact has been added
+  res.status(201).send(contactInfo);
+});
+
 
 app.listen(port, function () {
 	console.log('Example app listening on port: ' + port);
