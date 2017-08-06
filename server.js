@@ -83,8 +83,7 @@ app.post('/contacts', function (req, res) {
 app.put('/contacts/:id', function (req, res) {
   for (var i=0;i<contacts.length;i++) {
     if (contacts[i].id == Number(req.params.id)) {
-      //contacts[i] = Object.assign(contacts[i], req.body);
-      contacts[i] = Object.assign(req.body);
+      contacts[i] = Object.assign(contacts[i], req.body);
       console.log(contacts[i]);
       return res.status(200).send(contacts[i]);
     }
