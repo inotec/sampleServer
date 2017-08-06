@@ -5,7 +5,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 var contacts = [];
-var contactID = 100;
+var contactID = 1;
 
 /*
 app.use(function (req, res, next) {
@@ -34,12 +34,15 @@ app.get('/addViaParams/:numberOne/:numberTwo', function (req, res) {
 
 });
 */
+
+/*
 app.get('/addViaQuery', function (req, res) {
 	var numberOne = Number(req.query.numberOne);
 	var numberTwo = Number(req.query.numberTwo);
 
 	res.send(`${numberOne + numberTwo}`);  // convert back to string
 })
+*/
 
 /*
 app.post('/contacts', function (req, res) {
@@ -47,6 +50,15 @@ app.post('/contacts', function (req, res) {
 	res.send('ok');
 });
 */
+
+app.get('/contacts/:id', function (req, res) {
+  for (var i=0;i<contacts.length;i++) {
+    if (contacts[i].id == Number(req.params.id)) {
+      return res.status(200).send(contacts[i]);
+    }
+  }
+  return res.status(404).send({ message: 'contact not found' });
+});
 
 app.post('/contacts', function (req, res) {
   // grab the posted info
@@ -67,17 +79,22 @@ app.post('/contacts', function (req, res) {
   res.status(201).send(contactInfo);
 });
 
-app.get('/contacts/:id', function (req, res) {
-  for (var i=0; i<contacts.length; i++) {
+
+app.put('/contacts/:id', function (req, res) {
+  for (var i=0;i<contacts.length;i++) {
     if (contacts[i].id == Number(req.params.id)) {
+      //contacts[i] = Object.assign(contacts[i], req.body);
+      contacts[i] = Object.assign(req.body);
+      console.log(contacts[i]);
       return res.status(200).send(contacts[i]);
     }
   }
-  return res.status(404).send({ message: 'contact not found' });
+  return res.status(404).send({ message: 'contact not found'});
 });
-	
-//
 
+	
 app.listen(port, function () {
 	console.log('Example app listening on port: ' + port);
 });
+
+
