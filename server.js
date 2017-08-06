@@ -28,6 +28,11 @@ app.get('/contacts/:id', function (req, res) {
   return res.status(404).send({ message: 'contact not found' });
 });
 
+// Get with local host:300/contacts in browser URL will list all contacts
+app.get('/contacts', function (req, res) {
+  return res.status(200).send(contacts);
+});
+
 // POST with localhost:3000/contacts will store info in next array element
 app.post('/contacts', function (req, res) {
   // grab the posted info
