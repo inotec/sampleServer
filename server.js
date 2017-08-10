@@ -13,25 +13,40 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 
-
-
 var port = process.env.PORT || 3000;
 
 
-// GET with localhost:3000/contacts/2 in browser URL will get info on id=2
-app.get('/contacts/:id', function (req, res) {
+// Get with query on names
+app.get('/contacts/search', function (req, res) {
+  var nameToMatch = req.query.name;
+  var emailToMatch = req.query.email;
+
+  console.log(req.query);
+
+  var results = [];
+
   for (var i=0;i<contacts.length;i++) {
-    if (contacts[i].id == Number(req.params.id)) {
-      return res.status(200).send(contacts[i]);
+    var matchesName = true;
+    var matchesEmail = true;
+
+    // IF a name was provided and it doesn't match...
+    if (nameToMatch && (contacts[i].name != nameToMatch)) {
+      matchesName = false;
+    }
+
+    // IF an email was provided and it doesn't match
+    if (emailToMatch && (contacts[i].email != emailToMatch)) {
+      matchesEmail = false;
+    }
+
+    // IF it passed both tests, include it in the results
+    if (matchesName && matchesEmail) {
+      results.push(contacts[i]);
     }
   }
-  return res.status(404).send({ message: 'contact not found' });
+  return res.status(200).send({ results: results });
 });
 
-// Get with local host:300/contacts in browser URL will list all contacts
-app.get('/contacts', function (req, res) {
-  return res.status(200).send(contacts);
-});
 
 // POST with localhost:3000/contacts will store info in next array element
 app.post('/contacts', function (req, res) {
@@ -63,7 +78,7 @@ app.put('/contacts/:id', function (req, res) {
       return res.status(200).send(contacts[i]);
     }
   }
-  return res.status(404).send({ message: 'contact not found'});
+  return res.status(404).send({ message: 'contact not found (replace)'});
 });
 
 app.delete('/contacts/:id', function (req, res) {
@@ -74,7 +89,7 @@ app.delete('/contacts/:id', function (req, res) {
       return res.status(200).send({ message: 'contact deleted' });
     }
   }
-  return res.status(404).send({ message: 'contact not found' });
+  return res.status(404).send({ message: 'contact not found (delete)' });
 });
 	
 app.listen(port, function () {
