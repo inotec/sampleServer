@@ -15,6 +15,11 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 3000;
 
+// Hello World
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+});
+
 
 // Get with query on names
 app.get('/contacts/search', function (req, res) {
