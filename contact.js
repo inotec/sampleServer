@@ -44,8 +44,16 @@ function ContactsHandler() {
   };
 
   this.remove = function (attrs, callback) {
+  	var idToRemove = attrs.id;
+	  for (var i=0;i<self.contacts.length;i++) {
+	    if (self.contacts[i].id == idToRemove) {
+	      self.contacts.splice(i,1);
+	      console.log(self.contacts);
+	    }
+	  }
+	  callback(null, attrs);
+	};  
 
-  };
-}
+};
 
 module.exports = new ContactsHandler();

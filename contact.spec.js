@@ -44,7 +44,7 @@ describe('A Contact', function () {
       Contact.contactsID = 6;
     });
     
-    it.only ('finds by name', function (done) {
+    it('finds by name', function (done) {
       Contact.find({ name: 'bob' }, function (err, foundContacts) {
         expect(foundContacts.length).to.equal(2);
         var ids = foundContacts.map((contact) => contact.id);
@@ -59,7 +59,7 @@ describe('A Contact', function () {
       });
     });
 
-	it.only ('finds by email', function (done) {
+	it('finds by email', function (done) {
       Contact.find({ email: 'bob@bob.com' }, function (err, foundContacts) {
         expect(foundContacts.length).to.equal(2);
         var ids = foundContacts.map((contact) => contact.id);
@@ -81,4 +81,20 @@ describe('A Contact', function () {
       });
     });
 
+    it('removes by id', function (done) {
+      Contact.remove({ id: 3 }, function (err) {
+        expect(Contact.contacts.length).to.equal(4);
+        var ids = Contact.contacts.map((contact) => contact.id);
+        expect(ids).to.not.contain(3);
+
+        Contact.remove({ id: 1 }, function (err) {
+          expect(Contact.contacts.length).to.equal(3);
+          var ids = Contact.contacts.map((contact) => contact.id);
+          expect(ids).to.not.contain(1);
+          done();
+        });
+      });
+    });
+
+    
   });
