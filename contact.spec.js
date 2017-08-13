@@ -59,6 +59,7 @@ describe('A Contact', function () {
       });
     });
 
+
 	it('finds by email', function (done) {
       Contact.find({ email: 'bob@bob.com' }, function (err, foundContacts) {
         expect(foundContacts.length).to.equal(2);
@@ -96,5 +97,30 @@ describe('A Contact', function () {
       });
     });
 
-    
+		it ('finds by id', function (done) {
+      Contact.findById(3, function (err, foundContact) {
+        expect(foundContact.name).to.equal('bill');
+        expect(foundContact.id).to.equal(3);
+
+        Contact.findById(2, function (err, foundContact) {
+          expect(foundContact.name).to.equal('sam');
+          expect(foundContact.id).to.equal(2);
+          done();
+        });
+      });
+    });
+
+    it ('calls back with null if not found', function (done) {
+      Contact.findById(12, function (err, foundContact) {
+        expect(foundContact).to.not.exist;
+        done();
+      });
+    });
+
+    it ('calls back with null for foundContact if id arg is null', function (done) {
+      Contact.findById(null, function (err, foundContact) {
+        expect(foundContact).to.not.exist;
+        done();
+      });
+    });
   });

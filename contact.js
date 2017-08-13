@@ -32,8 +32,14 @@ function ContactsHandler() {
     callback(null, results);
   };
 
-  this.findById = function (attrs, callback) {
-
+  // Provides id, gets back one contact
+  this.findById = function (id, callback) {
+    for (var i=0;i<self.contacts.length;i++) {
+      if (self.contacts[i].id == id) {
+        return callback(null, self.contacts[i]);
+      }
+    }
+    return callback(null, null);
   };
 
   this.create = function (attrs, callback) {
@@ -43,6 +49,7 @@ function ContactsHandler() {
     callback(null, attrs);
   };
 
+  // Passes attr, in this case id;  Doesn't return anything
   this.remove = function (attrs, callback) {
   	var idToRemove = attrs.id;
 	  for (var i=0;i<self.contacts.length;i++) {
