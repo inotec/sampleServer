@@ -1,8 +1,11 @@
+
 const morgan = require('morgan');
+const Contact = require('./contact.js');
 
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+
 
 var contacts = [];
 var contactID = 1;
@@ -18,6 +21,16 @@ var port = process.env.PORT || 3000;
 // Hello World
 app.get('/', function (req, res) {
   res.send('Hello World!')
+});
+
+// For Supertest
+app.get('/contacts/:id', function (req, res) {
+  Contact.findById(Number(req.params.id), function (err, foundContact) {
+    if (foundContact) {
+      return res.status(200).send(foundContact);
+    }
+    return res.status(404).send({ message: 'contact not found'});
+  });
 });
 
 
@@ -101,4 +114,7 @@ app.listen(port, function () {
 	console.log('Example app listening on port: ' + port);
 });
 
+// We also need to give supertest access to our app, so we've got to expose it 
+//in server.js. At the bottom of server.js, add this line:
+module.exports = app;
 

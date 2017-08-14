@@ -12,7 +12,7 @@ describe('A Contact', function () {
   });
  });
 
-  describe.only('find', function () {
+  describe('find', function () {
     beforeEach(function () {
       Contact.contacts = [
                             {
