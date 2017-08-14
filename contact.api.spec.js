@@ -36,10 +36,9 @@ describe.only('/contacts', function () {
                         ];
     Contact.contactsID = 6;
   });
-});
 
-describe('GET /contacts/:id', function () {
-    it ('404s if not found', function (done) {
+	describe('GET /contacts/:id', function () {
+    it ('Gets a contact', function (done) {
       request(app)
         .get('/contacts/3')       // GET request to /contacts/:id with 999 as id
         .expect(200)                // EXPECT it to 
@@ -58,4 +57,20 @@ describe('GET /contacts/:id', function () {
           }
         });
     });
+    it('returns 404 if id not found', function (done) {
+      request(app)
+        .get('/contacts/999')
+        .expect(404)
+        .end(function(err, res){
+          if(err) {
+            console.log('you have fucked up');
+            console.log(err);
+            done(err);
+          } else {
+            done();
+          }
+        });
+    });
   });
+});
+
