@@ -65,7 +65,7 @@ app.get('/contacts/search', function (req, res) {
   return res.status(200).send({ results: results });
 });
 
-
+/*
 // POST with localhost:3000/contacts will store info in next array element
 app.post('/contacts', function (req, res) {
   // grab the posted info
@@ -85,8 +85,16 @@ app.post('/contacts', function (req, res) {
   // tell the message sender that the contact has been added
   res.status(201).send(contactInfo);
 });
+*/ 
+
+app.post('/contacts', function (req, res) {
+  Contact.create(req.body, function (err, createdContact) {
+    res.status(201).send(createdContact);
+  });
+}); 
 
 // PUT with localhost:3000/contacts/2 will replace info for element with id=2
+/*
 app.put('/contacts/:id', function (req, res) {
   for (var i=0;i<contacts.length;i++) {
     if (contacts[i].id == Number(req.params.id)) {
@@ -97,6 +105,17 @@ app.put('/contacts/:id', function (req, res) {
     }
   }
   return res.status(404).send({ message: 'contact not found (replace)'});
+});
+*/
+
+app.put('/contacts/:id', function (req, res) {
+  Contact.findById(Number(req.params.id), function (err, foundContact) {
+    if (foundContact) {
+      foundContact = Object.assign(foundContact, req.body);
+      return res.status(200).send(foundContact);
+    }
+    return res.status(404).send({ message: 'contact not found'});
+  });
 });
 
 app.delete('/contacts/:id', function (req, res) {
@@ -116,5 +135,6 @@ app.listen(port, function () {
 
 // We also need to give supertest access to our app, so we've got to expose it 
 //in server.js. At the bottom of server.js, add this line:
+
 module.exports = app;
 
