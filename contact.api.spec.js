@@ -33,6 +33,7 @@ describe('/contacts', function () {
                             id: 5
                           }
                         ];
+    Contact.contactsID = 6;
   });
 
   describe('GET /contacts/:id', function () {
@@ -86,7 +87,7 @@ describe('/contacts', function () {
             expect(res.body.email).to.equal('sue@sue.com');
             expect(res.body.id).to.exist;
 
-            console.log(Contacts.contact);
+            console.log(Contact.contacts);
 
             Contact.findById(res.body.id, function (err, foundContact) {
               expect(foundContact.name).to.equal('sue');
