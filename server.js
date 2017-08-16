@@ -112,6 +112,8 @@ app.put('/contacts/:id', function (req, res) {
   Contact.findById(Number(req.params.id), function (err, foundContact) {
     if (foundContact) {
       foundContact = Object.assign(foundContact, req.body);
+      console.log(foundContact);
+      console.log(Contact.contacts);
       return res.status(200).send(foundContact);
     }
     return res.status(404).send({ message: 'contact not found'});
