@@ -71,7 +71,7 @@ describe('/contacts', function () {
     });
   });
 
-  describe.only('POST /contacts', function () {
+  describe('POST /contacts', function () {
     it ('creates a new contact', function (done) {
       request(app)
         .post('/contacts')
@@ -127,7 +127,7 @@ describe('/contacts', function () {
           }
         });
     });
-   
+
 
   });
 
@@ -141,13 +141,39 @@ describe('/contacts', function () {
     });
   });
 
-  describe('DELETE /contacts/:id', function () {
-    xit ('returns 404 if the provided id does not exist', function (done) {
-      done();
+  describe.only('DELETE /contacts/:id', function () {
+    it ('returns 404 if the provided id does not exist', function (done) {
+      request(app)
+        .delete('/contacts/999')
+        .expect(404)
+        .end(function(err, res){
+          if(err) {
+            console.log('you have fucked up');
+            console.log(err);
+            done(err);
+          } else {
+            done();
+          }            
+        });
     });
     
-    xit ('deletes a contact', function (done) {
-      done();
+    it ('deletes a contact', function (done) {
+      request(app)
+        .delete('/contacts/3')
+        .expect(200)
+        .end(function(err, res){
+          if(err) {
+            console.log('you have fucked up');
+            console.log(err);
+            done(err);
+          } else {
+            // check the response body
+            expect(Contact.contacts.length).to.equal(4);
+            var ids = Contact.contacts.map((contact) => contact.id);
+            expect(ids).to.not.contain(3);
+            done();
+          }            
+        });
     });
   });
 

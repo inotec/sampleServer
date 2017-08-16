@@ -121,15 +121,16 @@ app.put('/contacts/:id', function (req, res) {
 });
 
 app.delete('/contacts/:id', function (req, res) {
-  for (var i=0;i<contacts.length;i++) {
-    if (contacts[i].id == Number(req.params.id)) {
-      contacts.splice(i,1);
-      console.log(contacts);
-      return res.status(200).send({ message: 'contact deleted' });
+  Contact.findById(Number(req.params.id), function (err, foundContact) {
+    if (!foundContact) {
+      return res.status(404).send({ message: 'contact not found' });
     }
-  }
-  return res.status(404).send({ message: 'contact not found (delete)' });
+    Contact.remove({ id: Number(req.params.id) }, function (err) {
+      return res.status(200).send({ message: 'contact deleted' });
+    });
+  });
 });
+
 	
 app.listen(port, function () {
 	console.log('Example app listening on port: ' + port);
