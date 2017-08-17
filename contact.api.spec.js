@@ -25,7 +25,7 @@ describe('/contacts', function () {
                           {
                             name: 'bob',
                             email: 'bob@bob.com',
-                            id: 4
+                            id: 4 
                           },
                           {
                             name: 'bill',
@@ -141,7 +141,7 @@ describe('/contacts', function () {
     });
   });
 
-  describe.only('DELETE /contacts/:id', function () {
+  describe('DELETE /contacts/:id', function () {
     it ('returns 404 if the provided id does not exist', function (done) {
       request(app)
         .delete('/contacts/999')
@@ -177,9 +177,37 @@ describe('/contacts', function () {
     });
   });
 
-  describe('GET /contacts', function () {
-    xit ('gets all the contacts', function (done) {
-      done();
+  describe.only('GET /contacts', function () {
+    it ('gets all the contacts', function (done) {
+      request(app)
+        .get('/contacts')
+        .expect(200)
+        .end(function(err, res){
+          if(err) {
+            console.log('you have fucked up');
+            console.log(err);
+            done(err);
+          } else {
+            var results = res.body;
+            expect(results.length).to.equal(5);
+            
+            // check the first results to make sure it worked.
+            // We may want to change the order later, so that's why
+            // we are just checking for existence here.
+            expect(results[0].name).to.exist;
+            expect(results[0].email).to.exist;
+            expect(results[0].id).to.exist;
+
+            // now make sure it got them all with no duplicates
+            var ids = results.map((result) => result.id);
+            expect(ids).to.contain(1);
+            expect(ids).to.contain(2);
+            expect(ids).to.contain(3);
+            expect(ids).to.contain(4);
+            expect(ids).to.contain(5);
+            done();
+          }
+        });
     });
   });
 

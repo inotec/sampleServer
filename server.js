@@ -23,6 +23,13 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 });
 
+// Get all contacts
+app.get('/contacts', function (req, res) {
+  Contact.find({}, function (err, foundContacts) {
+    return res.status(200).send(foundContacts);
+  });
+});
+
 // For Supertest
 app.get('/contacts/:id', function (req, res) {
   Contact.findById(Number(req.params.id), function (err, foundContact) {
