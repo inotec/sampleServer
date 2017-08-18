@@ -1,6 +1,6 @@
 
 const morgan = require('morgan');
-const Contact = require('./contact.js');
+const Contact = require('./contact/contact.js');
 
 var express = require('express');
 var app = express();

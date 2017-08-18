@@ -110,31 +110,6 @@ describe('A Contact', function () {
       });
     });
 
-    it ('modifies a contact', function (done) {
-    	.put('/contact/3')
-    	.send({ email: 'newEmail@newEmail.com', name: 'newName' })
-    	.expect(200)
-    	.end(function(err, res) {
-    		if(err) {
-    			console.log('you have fucked up');
-    			console.log(err);
-    		} else {
-    			// check the response body
-    			expect(res.body.name).to.equal('newName');
-    			expect(res.body.email).to.equal('newEmail@newEmail.com');
-    			expect(res.body.id).to.equal(3);
-
-    			// now make sure it got changed on the server
-    			Contact.findById(3, function (err, foundContact) {
-    				expect(FoundContact.name).to.equal('newName');
-    				expect(FoundContact.email).to.equal('newEmail@newEmail.com')
-    				expect(FoundContact.id).to.equal(3);
-    			})
-    		}
-    		}
-    	})
-    })
-
     it ('calls back with null if not found', function (done) {
       Contact.findById(12, function (err, foundContact) {
         expect(foundContact).to.not.exist;

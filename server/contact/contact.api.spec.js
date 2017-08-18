@@ -1,4 +1,4 @@
-const app = require('./server.js');
+const app = require('../server.js');    // '../' means "up a folder"
 const request = require('supertest');
 
 const expect = require('chai').expect;
