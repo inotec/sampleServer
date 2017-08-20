@@ -46,6 +46,7 @@ router.delete('/:id', function (req, res) {
 });
 
 router.get('/', function (req, res) {
+	console.log('Hi ');
   Contact.find({}, function (err, foundContacts) {
     return res.status(200).send(foundContacts);
   });
