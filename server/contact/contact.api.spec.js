@@ -177,7 +177,7 @@ describe('/contacts', function () {
     });
   });
 
-  describe.only('GET /contacts', function () {
+  describe('GET /contacts', function () {
     it ('gets all the contacts', function (done) {
       request(app)
         .get('/contacts')

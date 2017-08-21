@@ -9,7 +9,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 // routes
-app.use('contacts', require('./contact/contact.routes.js'));
+app.use('/contacts', require('./contact/contact.routes.js'));
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
